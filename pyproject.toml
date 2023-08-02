@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "dvwa-brute-force-python"
+version = "0.1.0"
+description = ""
+authors = ["Vincent Stevenson <35041906+vastevenson@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "dvwa_brute_force_python"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+selenium = "^4.11.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
